@@ -1,6 +1,8 @@
 <div class="review-container">
     <div class="review-header">
         <div class="rating">{{review.rating}}/5</div>
+        <span *ngIf="review.isIOS()" class="badge badge-primary">iOS</span>
+        <span *ngIf="review.isAndroid()" class="badge badge-success">Android</span>
       </div>
   <div class="review-content">
     {{review.text}}

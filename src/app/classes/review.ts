@@ -28,10 +28,12 @@ export class Review {
         }
         this.type = type;
     }
+
+    public isAndroid(): boolean { return this.type === GOOGLE}
+    public isIOS(): boolean { return this.type === IOS}
 }
 
 /**EXAMPLE IOS REVIEW object
- * /**
    * author: [{…}]
 content: (2) [{…}, {…}]
 id: ["3353379321"]
@@ -44,4 +46,3 @@ link: [{…}]
 title: ["New stuff"]
 updated: ["2018-10-28T03:38:40-07:00"]
    */
- */

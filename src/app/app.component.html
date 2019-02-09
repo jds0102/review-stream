@@ -1,9 +1,14 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
+<!-- Going to have to find a different solution for google reviews
+  Options right now seem like:
+   -use a 3rd party service but I'm not convinced that would alleviate the lack of being able to provide credentials
+   -Implement a tiny backend server and a separate page that allows you to login similar to google's limited-access device auth flow
 
 <button class="btn btn-default" (click)="login()">
-  Login <!--todo maybe hide this once login is successful-->
+  Login
 </button>
-<div class="games-wrapper">
-<app-game *ngFor="let game of games" [game]="game"></app-game>
+-->
+<div class="container-fluid">
+  <router-outlet></router-outlet>
 </div>

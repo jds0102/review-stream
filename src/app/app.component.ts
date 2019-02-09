@@ -1,29 +1,28 @@
 import { OAuthService } from 'angular-oauth2-oidc';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { JwksValidationHandler } from 'angular-oauth2-oidc';
 import { authConfig } from './classes/authConfig'
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
 
-  games = [
-    { appleId: '359917414', googleId: 'com.mobilityware.solitaire', name: 'Solitaire' },
-    { appleId: '395979574', googleId: 'com.mobilityware.spider', name: 'Spider' },
-    { appleId: '301987699', googleId: 'com.mobilityware.spider', name: 'Freecell' },
-    { appleId: '309409628', googleId: 'com.mobilityware.spider', name: 'Pyramid Free' },
-    { appleId: '949295212', googleId: 'com.mobilityware.spider', name: 'Tri Peaks Free' },
-    { appleId: '1275760266', googleId: 'com.mobilityware.spider', name: 'Crown Solitaire' },
-    { appleId: '1382466301', googleId: 'com.mobilityware.spider', name: 'Castle Solitaire' },
-    { appleId: '1392685721', googleId: 'com.mobilityware.spider', name: 'Spider Go' },
-  ];
+  
 
-  constructor(private oauthService: OAuthService) {
+  constructor(
+    private oauthService: OAuthService, 
+    private route: ActivatedRoute
+  ) {
     this.configureWithNewConfigApi();
+  }
+
+  ngOnInit() {
   }
 
   public login() {
@@ -39,6 +38,11 @@ export class AppComponent {
     this.oauthService.configure(authConfig);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    // .then(res => {
+    //   let token = this.oauthService.getAccessToken();
+    //   console.log(res);
+    // }
+    // );
    
   }
 }
