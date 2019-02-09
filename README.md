@@ -1,5 +1,7 @@
 # ReviewApp
 
+Shows basic info (from iOS) about each app listed in the app.component.ts and loads the most recent reviews from the Apple Store and Google Play Store (Currently play store integration won't work until we include a client id for a google app that has permission(?) to load data for the listed packages, to use the play store integration add a client_id to the authConfig.ts file and remove the line in the review.service.ts that is loading fake data)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
 
 ## Development server
