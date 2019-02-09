@@ -1,0 +1,12 @@
+<div class="review-container">
+    <div class="review-header">
+        <div class="rating">{{review.rating}}/5</div>
+      </div>
+  <div class="review-content">
+    {{review.text}}
+    <br />
+    {{review.date.getMonth()+1}}/{{review.date.getDay()}}/{{review.date.getFullYear()}}
+    <br />
+    {{review.author}}
+  </div>
+</div>

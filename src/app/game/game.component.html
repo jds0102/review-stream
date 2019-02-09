@@ -1,0 +1,14 @@
+<div class="game-container" *ngIf="loaded">
+  <div class="game-header">
+    <div>
+      <img src={{iosGame.icon}} />
+    </div>
+    <div class="game-title">
+      <h3>{{iosGame.name}}</h3>
+    </div>
+    <p>Average iOS Rating: {{iosGame.getAverageRating()}}</p>
+  </div>
+  <div class="review-wrapper">
+    <app-review-card *ngFor="let review of reviews" [review]="review"></app-review-card>
+  </div>
+</div>

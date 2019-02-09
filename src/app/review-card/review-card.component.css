@@ -1,0 +1,18 @@
+.review-container {
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.review-header >div {
+    display: inline;
+}
+
+.review-header .title {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.review-header .rating {
+    font-size: 14px;
+    padding-left: 10px;
+}
