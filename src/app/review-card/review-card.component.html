@@ -4,7 +4,7 @@
           <span *ngFor="let number of [1, 2, 3, 4, 5]" [ngClass]="{'filled': number <= review.rating}">★</span>
       </div>
       <div class="author">
-        {{review.author}}, {{review.date.getMonth()+1}}/{{review.date.getDay()}}/{{review.date.getFullYear()}}
+        {{review.author}}, {{review.date.getMonth()+1}}/{{review.date.getDate()}}/{{review.date.getFullYear()}}
       </div>
     </div>
   <div class="review">

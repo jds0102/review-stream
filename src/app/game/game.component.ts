@@ -21,6 +21,7 @@ export class GameComponent implements OnInit {
 
   private reviews: Review[] = [];
 
+  private reviewServicePage: number = 1;
   private reviewPage = 0;
   private reviewsPerPage = 3;
   private visibleReviews: Review[] = [];
@@ -38,8 +39,9 @@ export class GameComponent implements OnInit {
         this.loaded = true;
       })
 
-    this.reviewService.getAllReviews(this.game.appleId, this.game.googleId).subscribe(reviews => {
+    this.reviewService.getAllReviews(this.game.appleId, this.game.googleId, this.reviewServicePage).subscribe(reviews => {
       this.reviews = reviews.filter((review: Review) => review.rating >= this.minRating);
+      this.reviewServicePage++;
       this.updateReviews();
     });
 
@@ -55,6 +57,21 @@ export class GameComponent implements OnInit {
     const start = pageNum * this.reviewsPerPage;
     const end = start + this.reviewsPerPage;
     this.visibleReviews = this.reviews.slice(start, end);
+
+    if (this.reviews.length - end < 10) {
+      this.loadMoreReviews();
+    }
+  }
+
+  loadMoreReviews(): void {
+    if (this.reviewServicePage > 10) {
+      this.reviewPage = 0;
+      return;
+    }
+    this.reviewService.getAllReviews(this.game.appleId, this.game.googleId, this.reviewServicePage).subscribe(reviews => {
+      this.reviews = this.reviews.concat(reviews.filter((review: Review) => review.rating >= this.minRating))
+    });
+    this.reviewServicePage++;
   }
 
 }

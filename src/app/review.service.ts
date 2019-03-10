@@ -19,10 +19,10 @@ export class ReviewService {
 
   constructor(private http: HttpClient, private oauthService: OAuthService) { }
 
-  public getAllReviews(appleId: string, googleId: string): Observable<any> {
+  public getAllReviews(appleId: string, googleId: string, page: number): Observable<any> {
     const iosReviewObjs = new Observable((observer) => {
 
-      this.getIosReviews(appleId).subscribe(xml => {
+      this.getIosReviews(appleId, page).subscribe(xml => {
         parseString(xml, (err, result) => {
           observer.next(result.feed.entry.map(obj => new Review(obj, IOS)))
           observer.complete()
@@ -47,10 +47,10 @@ export class ReviewService {
     })
     return allReviews;
   }
-  public getIosReviews(appleId: string) {
+  public getIosReviews(appleId: string, page: number) {
     //we could let people switch which country with the following;
     //https://itunes.apple.com/${countryCode}/rss/... where country code is found here https://affiliate.itunes.apple.com/resources/documentation/linking-to-the-itunes-music-store/#appendix
-    let iosReviewUrl = `https://itunes.apple.com/rss/customerreviews/page=1/id=${appleId}/sortBy=mostRecent/xml`
+    let iosReviewUrl = `https://itunes.apple.com/rss/customerreviews/page=${page}/id=${appleId}/sortBy=mostRecent/xml`
 
     //Load the xml instead of the json here as it provides more data
     return this.http.get(iosReviewUrl, { responseType: 'text' })
