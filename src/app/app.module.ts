@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { RouterModule, Routes } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {HttpClientModule, HttpClientJsonpModule} from '@angular/common/http';
 
@@ -26,7 +27,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     HttpClientJsonpModule,
     OAuthModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

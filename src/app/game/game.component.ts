@@ -13,6 +13,7 @@ import { Review } from '../classes/review';
 export class GameComponent implements OnInit { 
 
   @Input() game: any;
+  @Input() minRating: number;
   
   private iosGame: IosGame;
 
@@ -20,9 +21,15 @@ export class GameComponent implements OnInit {
 
   private reviews: Review[] = [];
 
+  private reviewPage = 0;
+  private reviewsPerPage = 3;
+  private visibleReviews: Review[] = [];
+
   constructor(private reviewService: ReviewService, private http: HttpClient) { }
 
+
   ngOnInit() {
+
     // We should probably find the equivilant Android api to get at the very least the avg rating on the Play store
     let iosInfourl = `https://itunes.apple.com/lookup?id=${this.game.appleId}`;
     
@@ -32,9 +39,22 @@ export class GameComponent implements OnInit {
       })
 
     this.reviewService.getAllReviews(this.game.appleId, this.game.googleId).subscribe(reviews => {
-      this.reviews = reviews;
+      this.reviews = reviews.filter((review: Review) => review.rating >= this.minRating);
+      this.updateReviews();
     });
 
+  }
+
+  updateReviews() {
+    this.setVisibleReviews(this.reviewPage);
+    this.reviewPage++;
+    window.setTimeout(this.updateReviews.bind(this), 10000);
+  }
+
+  setVisibleReviews(pageNum: number): void {
+    const start = pageNum * this.reviewsPerPage;
+    const end = start + this.reviewsPerPage;
+    this.visibleReviews = this.reviews.slice(start, end);
   }
 
 }

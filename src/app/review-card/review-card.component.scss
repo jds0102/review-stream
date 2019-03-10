@@ -1,0 +1,44 @@
+.review-container {
+    background-color: #f8f8f8;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 10px 0;
+}
+
+.rating {
+font-size: 28px;
+color: #BFBFBF;
+
+.filled {
+    color: #ff9500;
+}
+
+span {
+    margin-right: -2px;
+}
+}
+
+.author {
+margin-bottom: 15px;
+color: #8e8e93;
+font-size: 12px;
+line-height: 1.33341;
+font-weight: 600;
+letter-spacing: 0;
+}
+
+.title{
+font-size: 13px;
+line-height: 1.38462;
+font-weight: 600;
+letter-spacing: -.005em;   
+color: #111;
+margin-bottom: 0;
+}
+
+.content {
+font-size: 13px;
+line-height: 1.38462;
+font-weight: 400;
+letter-spacing: -.005em;
+}

@@ -9,13 +9,19 @@ import { ActivatedRoute } from '@angular/router';
 export class DashboardComponent implements OnInit {
   
   games: any[] = [];
+  minRating: number = 3;
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     console.log('dashboard init')
     let gameNames = this.route.snapshot.queryParamMap.getAll('games');
-    
+    let minRating = this.route.snapshot.queryParamMap.get('minRating');
+
+    if (minRating && !Number.isNaN(parseFloat(minRating))) {
+      this.minRating = parseFloat(minRating);
+    }
+
     if (gameNames.length > 0) {
       this.games = AVAILABLE_GAMES.filter(game => gameNames.includes(game.shortName));
     } else {

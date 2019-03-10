@@ -1,9 +1,11 @@
 export class IosGame {
     
-    constructor(private _obj: any) {}
+    constructor(private _obj: any) {
+        console.log(this._obj);
+    }
 
     get icon(): string {
-        return this._obj.artworkUrl100;
+        return this._obj.artworkUrl512;
     }
 
     get name(): string {

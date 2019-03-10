@@ -1,14 +1,21 @@
-<div class="review-container">
+<div class="review-container" (click)="changeState()" [@transition]=currentState>
     <div class="review-header">
-        <div class="rating">{{review.rating}}/5</div>
-        <span *ngIf="review.isIOS()" class="badge badge-primary">iOS</span>
-        <span *ngIf="review.isAndroid()" class="badge badge-success">Android</span>
+      <div class="rating">
+          <span *ngFor="let number of [1, 2, 3, 4, 5]" [ngClass]="{'filled': number <= review.rating}">★</span>
       </div>
-  <div class="review-content">
-    {{review.text}}
+      <div class="author">
+        {{review.author}}, {{review.date.getMonth()+1}}/{{review.date.getDay()}}/{{review.date.getFullYear()}}
+      </div>
+    </div>
+  <div class="review">
+    <h3 *ngIf="review.title !== null" class="title">
+      {{review.title}}
+    </h3>
+    <div class="content">
+      {{review.text}}
+    </div>
     <br />
-    {{review.date.getMonth()+1}}/{{review.date.getDay()}}/{{review.date.getFullYear()}}
+    
     <br />
-    {{review.author}}
   </div>
 </div>

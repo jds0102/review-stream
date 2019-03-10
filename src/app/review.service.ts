@@ -34,12 +34,14 @@ export class ReviewService {
     );
 
     const allReviews = new Observable((observer) => {
-      forkJoin([iosReviewObjs, googleReviewObjs]).subscribe((results) => {
+      //todo add the google reviews back in ...
+      // forkJoin([iosReviewObjs, googleReviewObjs]).subscribe((results) => {
+      forkJoin([iosReviewObjs]).subscribe((results) => {
         let iosReviews = results[0] as Review[];
-        let googleReviews = results[1] as Review[];
-        let all = iosReviews.concat(googleReviews);
+        // let googleReviews = results[1] as Review[];
+        // let all = iosReviews.concat(googleReviews);
         //Return sorted reverse chronological
-        observer.next(all.sort((a: Review, b: Review) => { return b.date.getTime() - a.date.getTime() }));
+        observer.next(iosReviews.sort((a: Review, b: Review) => { return b.date.getTime() - a.date.getTime() }));
         observer.complete();
       });
     })
