@@ -15,11 +15,13 @@
     max-width: 200px;
     max-height: 200px;
     border-radius: 25%;
+    box-shadow: 1px 1px 4px -1px black
 }
 
 .game-title {
     font-size: 24px;
     font-weight: bold;
+    text-shadow: 2px 2px 2px black;
 }
 
 .average-rating {
