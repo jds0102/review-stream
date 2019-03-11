@@ -12,7 +12,7 @@ import { ReviewCardComponent } from './review-card/review-card.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const appRoutes: Routes = [
-  { path: 'dashboard', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
 ];
 
 @NgModule({
