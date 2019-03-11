@@ -33,7 +33,6 @@ export class ReviewCardComponent implements OnInit {
 
   changeState() {
     this.currentState = this.currentState === 'initial' ? 'final' : 'initial';
-    console.log(this.currentState);
   }
 
 }

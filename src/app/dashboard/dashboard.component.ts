@@ -14,7 +14,6 @@ export class DashboardComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    console.log('dashboard init')
     let gameNames = this.route.snapshot.queryParamMap.getAll('games');
     let minRating = this.route.snapshot.queryParamMap.get('minRating');
 

@@ -4,7 +4,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import * as faker from 'faker';
 import { Review, GOOGLE, IOS } from './classes/review';
 import { Observable, of, forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 let parseString = require('xml2js').parseString;
 
@@ -23,29 +23,35 @@ export class ReviewService {
     const iosReviewObjs = new Observable((observer) => {
 
       this.getIosReviews(appleId, page).subscribe(xml => {
-        parseString(xml, (err, result) => {
-          observer.next(result.feed.entry.map(obj => new Review(obj, IOS)))
-          observer.complete()
-        });
+          parseString(xml, (err, result) => {
+            if (result.feed.entry) {
+              observer.next(result.feed.entry.map(obj => new Review(obj, IOS)))
+              observer.complete()
+            } else {
+              observer.error('hello');
+            }
+          });
+        
       });
     })
-    let googleReviewObjs = this.getGoogleReviews(googleId).pipe(
-      map((reviews: Array<any>) => reviews.map(obj => new Review(obj, GOOGLE)))
-    );
-
-    const allReviews = new Observable((observer) => {
-      //todo add the google reviews back in ...
-      // forkJoin([iosReviewObjs, googleReviewObjs]).subscribe((results) => {
-      forkJoin([iosReviewObjs]).subscribe((results) => {
-        let iosReviews = results[0] as Review[];
-        // let googleReviews = results[1] as Review[];
-        // let all = iosReviews.concat(googleReviews);
-        //Return sorted reverse chronological
-        observer.next(iosReviews.sort((a: Review, b: Review) => { return b.date.getTime() - a.date.getTime() }));
-        observer.complete();
-      });
-    })
-    return allReviews;
+    //TODO, this works for google and ios reviews together but there may be some issues with the page number being shared
+    // let googleReviewObjs = this.getGoogleReviews(googleId).pipe(
+    //   map((reviews: Array<any>) => reviews.map(obj => new Review(obj, GOOGLE)))
+    // );
+    // const allReviews = new Observable((observer) => {
+    //   //todo add the google reviews back in ...
+    //   // forkJoin([iosReviewObjs, googleReviewObjs]).subscribe((results) => {
+    //   forkJoin([iosReviewObjs]).subscribe((results) => {
+    //     let iosReviews = results[0] as Review[];
+    //     // let googleReviews = results[1] as Review[];
+    //     // let all = iosReviews.concat(googleReviews);
+    //     //Return sorted reverse chronological
+    //     observer.next(iosReviews.sort((a: Review, b: Review) => { return b.date.getTime() - a.date.getTime() }));
+    //     observer.complete();
+    //   });
+    // })
+    // return allReviews;
+    return iosReviewObjs;
   }
   public getIosReviews(appleId: string, page: number) {
     //we could let people switch which country with the following;

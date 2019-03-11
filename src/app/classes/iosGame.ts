@@ -1,8 +1,6 @@
 export class IosGame {
     
-    constructor(private _obj: any) {
-        console.log(this._obj);
-    }
+    constructor(private _obj: any) {}
 
     get icon(): string {
         return this._obj.artworkUrl512;

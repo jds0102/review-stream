@@ -5,6 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IosGame } from '../classes/iosGame';
 import { Review } from '../classes/review';
 
+import { catchError, map } from 'rxjs/operators';
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -19,12 +21,14 @@ export class GameComponent implements OnInit {
 
   private loaded: boolean = false;
 
-  private reviews: Review[] = [];
-
   private reviewServicePage: number = 1;
+  private reviews: Review[] = [];
   private reviewPage = 0;
+  private allReviewsLoaded: boolean = false;
+
   private reviewsPerPage = 3;
   private visibleReviews: Review[] = [];
+  private maxPage = 10;
 
   constructor(private reviewService: ReviewService, private http: HttpClient) { }
 
@@ -39,39 +43,52 @@ export class GameComponent implements OnInit {
         this.loaded = true;
       })
 
-    this.reviewService.getAllReviews(this.game.appleId, this.game.googleId, this.reviewServicePage).subscribe(reviews => {
-      this.reviews = reviews.filter((review: Review) => review.rating >= this.minRating);
-      this.reviewServicePage++;
-      this.updateReviews();
-    });
-
+    this.resetReviews();
   }
 
   updateReviews() {
     this.setVisibleReviews(this.reviewPage);
     this.reviewPage++;
-    window.setTimeout(this.updateReviews.bind(this), 10000);
-  }
 
-  setVisibleReviews(pageNum: number): void {
-    const start = pageNum * this.reviewsPerPage;
-    const end = start + this.reviewsPerPage;
-    this.visibleReviews = this.reviews.slice(start, end);
-
-    if (this.reviews.length - end < 10) {
-      this.loadMoreReviews();
+    if (this.reviewPage >= this.reviews.length/this.reviewsPerPage) {
+      this.resetReviews();
+    } else {
+      if (!this.allReviewsLoaded) {
+        this.loadMoreReviews()
+      }
+      window.setTimeout(this.updateReviews.bind(this), 10000);
     }
   }
 
+  setVisibleReviews(pageNum: number): void {
+    let start = pageNum * this.reviewsPerPage;
+    const end = Math.min(start + this.reviewsPerPage, this.reviews.length - 1);
+    this.visibleReviews = this.reviews.slice(start, end);
+  }
+
+  resetReviews(): void {
+    this.allReviewsLoaded = false;
+    this.reviewServicePage = 1;
+    this.reviewPage = 0;
+    this.reviewService.getAllReviews(this.game.appleId, this.game.googleId, this.reviewServicePage).subscribe(reviews => {
+      this.reviews = reviews.filter((review: Review) => review.rating >= this.minRating);
+      this.reviewServicePage++;
+      this.updateReviews();
+    });
+  }
+
   loadMoreReviews(): void {
-    if (this.reviewServicePage > 10) {
-      this.reviewPage = 0;
+    if (this.reviewServicePage > this.maxPage) {
+      this.allReviewsLoaded = true;
       return;
     }
     this.reviewService.getAllReviews(this.game.appleId, this.game.googleId, this.reviewServicePage).subscribe(reviews => {
       this.reviews = this.reviews.concat(reviews.filter((review: Review) => review.rating >= this.minRating))
-    });
+    }, err => this.allReviewsLoaded = true) ;
     this.reviewServicePage++;
+    if (this.reviewServicePage > 10) {
+      this.allReviewsLoaded = true;
+    }
   }
 
 }
